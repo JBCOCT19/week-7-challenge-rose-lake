@@ -187,7 +187,7 @@ public class HomeController {
 
         // delete the message from the repository
         messageRepository.deleteById(id);
-        
+
         return "redirect:/";    // this will run the code inside of "/" mapping!
     }
 

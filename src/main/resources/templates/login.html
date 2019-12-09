@@ -5,12 +5,12 @@
 </head>
 <body>
 <div th:replace="base :: navbar"></div>
-<div class="container card-padding">
-    <div class="card w-50 mx-auto text-center">
-        <div th:if="${param.error}" class="alert alert-info" role="alert">
+<div class="container">
+    <div class="card w-50 mx-auto text-center mt-3">
+        <div th:if="${param.error}" class="alert alert-info mt-3" role="alert">
             Invalid username or password
         </div>
-        <div th:if="${infoMessage}!=null" class="alert alert-info" role="alert">
+        <div th:if="${infoMessage}!=null" class="alert alert-info mt-3" role="alert">
             <span th:text="${infoMessage}"></span>
         </div>
         <div class="card-body px-lg-5 pt-0">

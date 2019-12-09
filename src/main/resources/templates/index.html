@@ -7,10 +7,10 @@
 <div th:replace="base :: navbar"></div>
 <main class="container" role="main">
 
-    <div th:if="${param.logout}" class="alert alert-warning mt-3 w-50" role="alert">
+    <div th:if="${param.logout}" class="alert alert-warning mx-auto mt-3 w-50" role="alert">
         You have been logged out
     </div>
-    <div th:if="${infoMessage}!=null" class="alert alert-info mt-3 w-50" role="alert">
+    <div th:if="${infoMessage}!=null" class="alert alert-info mx-auto mt-3 w-50" role="alert">
         <span th:text="${infoMessage}"></span>
     </div>
 
