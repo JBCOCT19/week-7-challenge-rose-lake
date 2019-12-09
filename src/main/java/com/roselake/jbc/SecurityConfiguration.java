@@ -51,7 +51,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //*****************************************************************************
 
         http.authorizeRequests()
-                .antMatchers("/", "/h2-console/**", "/register", "/css/**", "/image/**").permitAll()
+                .antMatchers("/", "/h2-console/**",
+                        "/register", "/viewmessage/**", "/viewuser/**",
+                        "/css/**", "/image/**").permitAll()
                 // everyone is allowed to view root, h2-console, registration page, and all static files
                 .antMatchers("/admin").access("hasAuthority('ADMIN')")
                 .anyRequest().authenticated()

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:include="base::head">
-    <title id="title">Login</title>
+    <title id="headTitle">Login</title>
 </head>
 <body>
 <div th:replace="base :: navbar"></div>
@@ -10,8 +10,8 @@
         <div th:if="${param.error}" class="alert alert-info" role="alert">
             Invalid username or password
         </div>
-        <div th:if="${message}!=null" class="alert alert-info" role="alert">
-            <span th:text="${message}"></span>
+        <div th:if="${infoMessage}!=null" class="alert alert-info" role="alert">
+            <span th:text="${infoMessage}"></span>
         </div>
         <div class="card-body px-lg-5 pt-0">
             <form class="text-center" style="color: #757575;" th:action="@{/login}" method="post">

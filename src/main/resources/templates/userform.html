@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:include="base::head">
-    <title id="title">User</title>
+    <title id="headTitle">User</title>
 </head>
 <body>
 <div th:replace="base :: navbar"></div>
 <main class="container" role="main">
 
     <!-- card containing form for registration -->
-    <div class="card-body">
+    <div class="card-body flex-column mx-auto w-75">
 
         <!-- bootstrap alert -->
-        <div th:if="${message}!=null" class="alert alert-warning" role="alert">
-            <span th:text="${message}"></span>
+        <div th:if="${infoMessage}!=null" class="alert alert-warning mt-3" role="alert">
+            <span th:text="${infoMessage}"></span>
         </div>
 
-        <h1 class="header-text">Student Form</h1>
+        <div th:if="${user.id}==0">
+            <h1 class="header-text mt-3">Register User</h1>
+        </div>
+        <div th:unless="${user.id}==0">
+            <h1 class="header-text mt-3">Edit User</h1>
+        </div>
+
         <form class="text-center"
               action="#" th:action="@{/register}"
               th:object="${user}"
@@ -25,7 +31,6 @@
             <!-- id :: hidden input field -->
             <input hidden th:field="*{id}"/>
             <!-- NOTE :: if id == 0 then it is a NEW USER OBJECT -->
-            <!-- in this implementation, we don't ever EDIT EXSTING... But for future reference, it's a way to check -->
 
             <!-- firstName :: text input field -->
             <div class="input md-form form-group mt-5">
@@ -40,7 +45,6 @@
                 <span th:if="${#fields.hasErrors('firstName')}"
                       th:errors="*{firstName}"></span>
             </div>
-
 
             <!-- lastName :: text input field -->
             <div class="input md-form form-group mt-5">

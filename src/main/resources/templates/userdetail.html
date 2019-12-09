@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="base::head">
+    <title id="headTitle">User Detail</title>
+</head>
+<body>
+<div th:replace="base :: navbar"></div>
+<main role="main" class="container">
+    <h1 class="title text-center">User Detail</h1>
+    <!-- insert code to show Follow / Unfollow button here -->
+    <!--<div th:if=""></div>-->
+    <div class="card border-0 shadow my-5 mx-auto w-50">
+        <img th:if="${user.image}!=''"
+             class="card-img-top mx-auto align-self-center rounded-circle"
+             style="width:20rem; height=20rem;"
+             th:src="${user.image}"
+             alt="user avatar">
+        <div class="card-body text-center">
+            <h2 class="card-title"><span th:text="${user.firstName}"></span>&nbsp;<span th:text="${user.lastName}"></span></h2>
+            <h3 class="card-subtitle font-weight-light">email: <span th:text="${user.email}"></span></h3>
+            <h3 class="card-subtitle font-weight-light">username: <span th:text="${user.username}"></span></h3>
+        </div>
+    </div>
+</main>
+<div th:replace="base:: footer"></div>
+<div th:replace="base :: javascript-links"></div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="base::head">
+    <title id="headTitle">Message</title>
+</head>
+<body>
+<div th:replace="base :: navbar"></div>
+<main class="container" role="main">
+
+    <!-- card containing form for new message -->
+    <div class="card-body flex-column mx-auto w-75">
+
+        <!-- bootstrap alert -->
+        <div th:if="${infoMessage}!=null" class="alert alert-warning mt-3" role="alert">
+            <span th:text="${infoMessage}"></span>
+        </div>
+
+        <div th:if="${message.id}==0">
+            <h1 class="header-text mt-3">New Message</h1>
+        </div>
+        <div th:unless="${message.id}==0">
+            <h1 class="header-text mt-3">Edit Message</h1>
+        </div>
+
+        <form class="text-center"
+              action="#" th:action="@{/processmessage}"
+              th:object="${message}"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <!-- id :: hidden field -->
+            <input hidden th:field="*{id}"/>
+            <!-- NOTE :: if id == 0 then it is a NEW MESSAGE OBJECT -->
+
+            <!-- title :: text input field -->
+            <div class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="title">Title</label>
+                <input th:required="required"
+                       type="text"
+                       name="title" id="title"
+                       class="form-control"
+                       placeholder="Title"
+                       th:field="*{title}"/>
+                <span th:if="${#fields.hasErrors('title')}"
+                      th:errors="*{title}"></span>
+            </div>
+
+            <!-- date :: text input field -->
+            <div class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="date">Date</label>
+                <input th:required="required"
+                       type="text"
+                       name="date" id="date"
+                       class="form-control"
+                       placeholder="Date"
+                       th:field="*{date}"/>
+                <span th:if="${#fields.hasErrors('date')}"
+                      th:errors="*{date}"></span>
+            </div>
+
+            <!-- date :: text input field -->
+            <div class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="content">Content</label>
+                <textarea th:required="required"
+                          name="content" id="content"
+                          class="form-control"
+                          rows="5"
+                          placeholder="Your Message Content goes here..."
+                          th:field="*{content}"></textarea>
+                <span th:if="${#fields.hasErrors('content')}"
+                      th:errors="*{content}"></span>
+            </div>
+
+            <!-- image :: hidden pass-through field -->
+            <input hidden th:field="*{image}"/>
+            <!-- image :: DISPLAY existing image -->
+            <div th:if="${message.image}!=''"
+                 class="form-group mt-5 text-left">
+                <label for="existingImage">Existing Image</label>
+                <img th:src="${message.image}" alt="message image"
+                     id="existingImage"/>
+            </div>
+            <!-- image :: FILE input -->
+            <div class="form-group mt-5 text-left">
+                <label th:if="${message.image}==''"
+                       for="file">Set Post Image (Optional)</label>
+                <label th:unless="${message.image}==''"
+                       for="file">Change Post Image</label>
+                <input type="file"
+                       id="file" name="file"
+                       class="form-control-file">
+            </div>
+
+            <!-- silently passed along fields -->
+            <input hidden th:field="*{username}"/>
+            <input hidden th:field="*{user}"/>
+
+            <!-- oh yeah, SUBMIT -->
+            <button type="submit" class="btn btn-outline-info btn-rounded waves-effect">
+                <span th:if="${message.id==0}">
+                    <i class="fas fa-plus pr-2"></i>
+                    Post
+                </span>
+                <span th:unless="${message.id==0}">
+                    Save
+                </span>
+            </button>
+
+        </form>
+    </div>
+    <div th:replace="base :: footer"></div>
+    <div th:replace="base :: javascript-links"></div>
+</main>
+</body>
+</html>
+

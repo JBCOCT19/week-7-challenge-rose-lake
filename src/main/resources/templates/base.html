@@ -17,7 +17,7 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title th:include=":: #title">Base</title>
+    <title th:include=":: #headTitle">Base</title>
 
     <!-- link to bootstrap cdn 11.21.19 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -92,87 +92,88 @@
     <!--<a class="navbar-brand" th:href="@{/}"><img src="" class="" width="30" height="30" alt="brand logo"></a>-->
     <!--<a class="navbar-brand" th:href="@{/}"><i class="fas fa-peace"></i></a>-->
     <!--<a class="navbar-brand mx-2" th:href="@{/home}"><img src="" width="30" height="30" alt="brand logo"></a>-->
-    <a class="navbar-brand" th:href="@{/home}"><i class="fas fa-book-open"></i></a>
+    <a class="navbar-brand" th:href="@{/}"><i class="fas fa-book-open"></i></a>
 
+    <!-- toggler :: for AUTH or NOAUTH navbar sections -->
+    <button th:if="${#authorization.expression('isAuthenticated()')}"
+            class="navbar-toggler" type="button"
+            data-toggle="collapse" data-target="#navbarSupportedAUTHContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <button th:unless="${#authorization.expression('isAuthenticated()')}"
+            class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedNOAUTHContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- BEGIN :: isAuthenticated navbar segment -->
-    <span th:if="${#authorization.expression('isAuthenticated()')}">
-        <!-- toggler -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedAUTHContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- nav bar, centered :: AUTHENTICATED USER -->
+    <div th:if="${#authorization.expression('isAuthenticated()')}"
+         class="mx-auto d-block">
+        <div class="collapse navbar-collapse text-center" id="navbarSupportedAUTHContent">
+            <!-- centered nav bar words & search box -->
+            <ul class="navbar-nav">
 
-        <!-- nav bar, centered -->
-        <div class="mx-auto d-block">
-            <div class="collapse navbar-collapse text-center" id="navbarSupportedAUTHContent">
-                <!-- centered nav bar words & search box -->
-                <ul class="navbar-nav">
+                <li class="nav-item active pr-2">
+                    <a class="nav-link" th:href="@{/}">
+                        <i class="fas fa-bars pr-2"></i>
+                        View All
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
 
-                    <li class="nav-item active pr-2">
-                        <a class="nav-link" th:href="@{/}">
-                            <i class="fas fa-bars pr-2"></i>
-                            Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
+                <li class="nav-item active pr-2">
+                    <a class="nav-link" th:href="@{/addmessage}">
+                        <i class="far fa-edit"></i>
+                        New Message
+                    </a>
+                </li>
 
-                    <li class="nav-item active pr-2">
-                        <a class="nav-link" th:href="@{/addmessage}">
-                            <i class="far fa-edit"></i>
-                            Message
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
+            </ul>
         </div>
-        <!-- nav bar, right -->
-        <a class="nav-link text-right pr-2" th:href="@{/viewcurrentuser}">
-            <span sec:authentication="name"></span>'s Account
-            <i class="far fa-user pr-2"></i>
-        </a>
-        <a class="nav-link text-right" th:href="@{/logout}">
-            Logout
-            <i class="fas fa-sign-out-alt"></i>
-        </a>
-    </span>
-    <!-- END :: isAuthenticated navbar segment -->
-
-    <!-- BEGIN :: NOT isAuthenticated navbar segment -->
-    <span th:unless="${#authorization.expression('isAuthenticated()')}">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedNOAUTHContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- nav bar, centered -->
-        <div class="mx-auto d-block">
-            <div class="collapse navbar-collapse text-center" id="navbarSupportedNOAUTHContent">
-                <!-- centered nav bar words & search box -->
-                <ul class="navbar-nav">
-                    <li class="nav-item active pr-2">
-                        <a class="nav-link" th:href="@{/}">
-                            <i class="fas fa-bars pr-2"></i>
-                            Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    </div>
+    <!-- nav bar, centered :: NOT AUTHENTICATED USER -->
+    <div th:unless="${#authorization.expression('isAuthenticated()')}" class="mx-auto d-block">
+        <div class="collapse navbar-collapse text-center" id="navbarSupportedNOAUTHContent">
+            <!-- centered nav bar words & search box -->
+            <ul class="navbar-nav">
+                <li class="nav-item active pr-2">
+                    <a class="nav-link" th:href="@{/}">
+                        <i class="fas fa-bars pr-2"></i>
+                        View All
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <!-- nav bar, right -->
-        <a class="nav-link text-right pr-2" th:href="@{/login}">
-            Login
-            <i class="fas fa-sign-in-alt"></i>
-        </a>
-        <a class="nav-link text-right" th:href="@{/register}">
-            Register
-            <i class="fas fa-user-plus"></i>
-        </a>
-    </span>
-    <!-- END :: NOT isAuthenticated navbar segment -->
+    </div>
 
+
+    <!-- nav bar, right -->
+    <!-- VIEW ACCOUNT (auth) or REGISTER (no auth) -->
+    <a th:if="${#authorization.expression('isAuthenticated()')}"
+       class="nav-link text-right pr-2"
+       th:href="@{/viewcurrentuser}">
+        <span sec:authentication="name"></span>
+        <i class="far fa-user pr-2"></i>
+    </a>
+    <a th:unless="${#authorization.expression('isAuthenticated()')}"
+       class="nav-link text-right" th:href="@{/register}">
+        Register
+        <i class="fas fa-user-plus"></i>
+    </a>
+
+    <!-- LOGOUT (auth) or LOGIN (no auth) -->
+    <a th:if="${#authorization.expression('isAuthenticated()')}"
+       class="nav-link text-right" th:href="@{/logout}">
+        Logout
+        <i class="fas fa-sign-out-alt"></i>
+    </a>
+    <a th:unless="${#authorization.expression('isAuthenticated()')}"
+       class="nav-link text-right pr-2" th:href="@{/login}">
+        Login
+        <i class="fas fa-sign-in-alt"></i>
+    </a>
 
 </nav>
 

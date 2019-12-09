@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="base::head">
+    <title id="headTitle">Message Detail</title>
+</head>
+<body>
+<div th:replace="base :: navbar"></div>
+<main role="main" class="container">
+    <div class="card border-0 shadow my-5 mx-auto w-75" style="max-width: 30rem;">
+        <!-- if an IMAGE EXISTS -->
+        <div th:if="${message.image!=''}">
+            <img class="card-img mx-auto" th:src="${message.image}" alt="job image" style="max-height: 24rem"/>
+            <div class="card-img-overlay mx-auto">
+                <h5 class="text-center font-weight-bold" style="color:#c7c7c7;" th:text="${message.title}"></h5>
+            </div>
+        </div>
+        <!-- show the date posted just under the image -->
+        <div th:if="${message.image!=''}" class="card-body">
+            <p class="card-subtitle text-muted">Posted <span th:text="${message.date}"></span></p>
+        </div>
+        <!-- if an image DOES NOT EXIST -->
+        <div th:unless="${message.image!=''}">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${message.title}"></h5>
+                <p class="card-subtitle text-muted mb-2">
+                    Posted <span th:text="${message.date}"></span>
+                </p>
+            </div>
+        </div>
+        <!-- show this stuff EVERY TIME-->
+        <div class="card-body">
+            <p class="card-text" th:text="${message.content}"></p>
+        </div>
+
+        <!-- if this message belongs to you, show buttons to edit or delete -->
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <div th:if="${user.username}==${message.username}"
+                class="card-footer d-flex mx-auto">
+                <div class="btn-group btn-group-sm d-flex" role="group" aria-label="delete or edit this message">
+                    <a th:href="@{/deletemessage/{id}(id=${message.id})}"
+                       class="btn btn-sm btn-rounded">
+                        <i class="far fa-trash-alt pr-2"></i>
+                        Delete
+                    </a>
+                    <a th:href="@{/editmessage/{id}(id=${message.id})}"
+                       class="btn btn-sm btn-rounded">
+                        <i class="far fa-edit pr-2"></i>
+                        Edit
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</main>
+<div th:replace="base:: footer"></div>
+<div th:replace="base :: javascript-links"></div>
+</body>
+</html>

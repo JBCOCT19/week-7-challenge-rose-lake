@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:include="base::head">
-    <title id="title">Home</title>
+    <title id="headTitle">Home</title>
 </head>
 <body>
 <div th:replace="base :: navbar"></div>
 <main class="container" role="main">
+
     <div th:if="${param.logout}" class="alert alert-warning" role="alert">
         You have been logged out
     </div>
-    <div th:if="${message}!=null" class="alert alert-info" role="alert">
-        <span th:text="${message}"></span>
+    <div th:if="${infoMessage}!=null" class="alert alert-info" role="alert">
+        <span th:text="${infoMessage}"></span>
     </div>
+
+    <div th:unless="${#authorization.expression('isAuthenticated()')}"
+         class="card mx-auto w-50">
+        <div class="card-text">
+            Welcome!<br>
+            You may log in with user/user, rose/lake, or brian/lake for testing purposes.<br>
+            Enjoy!
+        </div>
+    </div>
+
     <h2 class="text-center mt-3">Messages</h2>
     <table class="table table-borderless mx-auto w-75" aria-label="list of messages">
         <thead>

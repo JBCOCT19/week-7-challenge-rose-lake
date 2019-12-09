@@ -177,6 +177,20 @@ public class User {
         this.messages = messages;
     }
 
+    public void addMessage(Message message) {
+        this.messages.add(message);
+    }
+
+    public void removeMessage(Message message) {
+        if(this.messages.contains(message)) {
+            this.messages.remove(message);
+        }
+    }
+
+    public void clearMessages(){
+        this.messages = new ArrayList<>();
+    }
+
     public ArrayList<Long> getPeopleIFollow() {
         return peopleIFollow;
     }
