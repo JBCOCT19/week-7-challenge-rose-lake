@@ -35,7 +35,11 @@
         <tr th:each="message : ${messages}">
             <td><span th:text="${message.title}"></span></td>
             <td><span th:text="${message.date}"></span></td>
-            <td><span th:text="${message.username}"></span></td>
+            <td>
+                <a th:href="@{viewuser/{username}(username=${message.username})}">
+                    <span th:text="${message.username}"></span>
+                </a>
+            </td>
             <td th:if="${#authorization.expression('isAuthenticated()')}"
                 class="btn-group btn-group-sm"
                 role="group"
