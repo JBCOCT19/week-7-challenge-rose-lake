@@ -1,0 +1,23 @@
+/******************************************************/
+/* keep footer at the bottom code                     */
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;                      /* sticky footer */
+    flex-direction: column;             /* sticky footer */
+    /*padding-top: 80px!important;*/
+    /* moved to class 'card-padding', below*/
+}
+.content {
+    flex: 1 0 auto;                     /* sticky footer */
+}
+.footer {
+    flex-shrink: 0;                     /* sticky footer */
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+/* end sticky footer code */
+/* sticky footer from https://css-tricks.com/couple-takes-sticky-footer/  --  Thank you !! */
+/*******************************************************************************************/

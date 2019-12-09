@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<!-- thank you to https://stackoverflow.com/questions/31451830/head-and-title-in-thymeleaf for the following -->
+<!-- follow this "template" for making <head> into a thymeleaf fragment but ALSO having the TITLE change! -->
+<!-- in the base, do this: -->
+<!--<head th:fragment="headerFragment">-->
+<!--    <title th:include=":: #pageTitle">Layout Generic Title </title>-->
+<!--        &lt;!&ndash; metas, link and scripts &ndash;&gt;-->
+<!--</head>-->
+<!-- in the actual pages, do this: -->
+<!--<head th:include="fragments/layout :: headerFragment">-->
+<!--    <title id="pageTitle">Page title</title>-->
+<!--    &lt;!&ndash; other elements you want to reference in your layout &ndash;&gt;-->
+<!--</head>-->
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:include=":: #title">Base</title>
+
+    <!-- link to bootstrap cdn 11.21.19 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Bootstrap core CSS -->
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">-->
+
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/css/mdb.min.css" rel="stylesheet">
+
+    <!-- my (one free) fontawesome kit link -->
+    <script src="https://kit.fontawesome.com/652790bb8a.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <!-- personal style sheet link -->
+    <!-- commenting this out so that automatic scripts don't update it wrong. -->
+    <!-- you must lead with a slash (omit the "static" folder) and then what you need -->
+    <!--<link rel="stylesheet" th:href="@{/styles.css}">--> <!-- this is for a styles.css that's just in static -->
+    <!--<link rel="stylesheet" th:href="@{/css/styles.css}">--> <!--- this is for a styles.css that's in static/css/ -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <!-- favicon link -->
+    <link rel="icon" type="image/png" href="">
+
+</head>
+
+<body>
+
+<!-- CODE SNIPPETS live here -->
+
+<!-- THYMELEAF + SECURITY -->
+<!-- thymeleaf-extras-springsecurity5 dependency allows you to use sec:authorize -->
+<!--<div sec:authorize="isAuthenticated()">-->
+<!--    This content is only shown to authenticated users.-->
+<!--</div>-->
+<!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
+<!--    This content is only shown to administrators.-->
+<!--</div>-->
+<!--<div sec:authorize="hasRole('ROLE_USER')">-->
+<!--    This content is only shown to users.-->
+<!--</div>-->
+<!--The sec:authentication attribute is used to print logged user name and roles:-->
+<!--Logged user: <span sec:authentication="name">Bob</span>-->
+<!--Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
+<!-- ALSO, this sort of code is useful for showing parts of navbars for specific users only!... -->
+<!--<span th:if="${user_id == course.user.id}">-->
+<!--    <a th:href="@{/update/{id}(id=${course.id})}">Update</a>-->
+<!--    <a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>-->
+<!--</span>-->
+<!--<a th:href="@{/detail/{id}(id=${course.id})}">Details</a>-->
+<!-- ALSO can use this: -->
+<!--<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') and #authorization.expression('...') }">-->
+<!--    This will only be displayed if authenticated user has role ROLE_ADMIN.-->
+<!--</div>-->
+<!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
+<!--    This will only be displayed if authenticated user has role ROLE_ADMIN.-->
+<!--</div>-->
+<!-- displaying the currently authenticated user's name -->
+<!--<div sec:authentication="name">-->
+<!--    The value of the "name" property of the authentication object should appear here.-->
+<!--</div>-->
+
+<!-- TH:FRAGMENTS live here -->
+
+<!-- fragment NAVBAR -->
+<nav th:fragment="navbar" class="navbar navbar-expand-md justify-content-center">
+
+    <!-- brand icon -->
+    <!--<a class="navbar-brand" th:href="@{/}"><img src="" class="" width="30" height="30" alt="brand logo"></a>-->
+    <!--<a class="navbar-brand" th:href="@{/}"><i class="fas fa-peace"></i></a>-->
+    <!--<a class="navbar-brand mx-2" th:href="@{/home}"><img src="" width="30" height="30" alt="brand logo"></a>-->
+    <a class="navbar-brand" th:href="@{/home}"><i class="fas fa-book-open"></i></a>
+
+
+    <!-- BEGIN :: isAuthenticated navbar segment -->
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <!-- toggler -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedAUTHContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- nav bar, centered -->
+        <div class="mx-auto d-block">
+            <div class="collapse navbar-collapse text-center" id="navbarSupportedAUTHContent">
+                <!-- centered nav bar words & search box -->
+                <ul class="navbar-nav">
+
+                    <li class="nav-item active pr-2">
+                        <a class="nav-link" th:href="@{/}">
+                            <i class="fas fa-bars pr-2"></i>
+                            Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item active pr-2">
+                        <a class="nav-link" th:href="@{/addmessage}">
+                            <i class="fas fa-plus pr-2"></i>
+                            Message
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- nav bar, right -->
+        <a class="nav-link text-right pr-2" th:href="@{/viewcurrentuser}">
+            <span sec:authentication="name"></span>'s Account
+            <i class="fas fa-bars pr-2"></i>
+        </a>
+        <a class="nav-link text-right" th:href="@{/logout}">
+            Logout
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+    <!-- END :: isAuthenticated navbar segment -->
+
+    <!-- BEGIN :: NOT isAuthenticated navbar segment -->
+
+    <div th:unless="${#authorization.expression('isAuthenticated()')}">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedNOAUTHContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- nav bar, centered -->
+        <div class="mx-auto d-block">
+            <div class="collapse navbar-collapse text-center" id="navbarSupportedNOAUTHContent">
+                <!-- centered nav bar words & search box -->
+                <ul class="navbar-nav">
+                    <li class="nav-item active pr-2">
+                        <a class="nav-link" th:href="@{/}">
+                            <i class="fas fa-bars pr-2"></i>Home<span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- nav bar, right -->
+        <a class="nav-link text-right" th:href="@{/login}">
+            <i class="fas fa-sign-out-alt"></i>
+            Login
+        </a>
+        <a class="nav-link text-right" th:href="@{/register}">
+            <i class="fas fa-plus pr-2"></i>
+            Register
+        </a>
+    </div>
+    <!-- END :: NOT isAuthenticated navbar segment -->
+
+
+</nav>
+
+<!-- not using, but useful -->
+<!--<li class="nav-item dropdown">-->
+<!--    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
+<!--       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--        Add...-->
+<!--    </a>-->
+<!--    <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--        <a class="dropdown-item" th:href="@{/addcourse}">Add Course</a>-->
+<!--        <a class="dropdown-item" th:href="@{/addstudent}">Add Student</a>-->
+<!--    </div>-->
+<!--</li>-->
+
+<!-- SEARCH form -->
+<!-- NOTE: there is no th:object in this form tag... therefore we need to use @RequestParam in HomeController -->
+<!--                <form class="form-inline" th:action="@{/search}" method="post">-->
+<!--                    <input class="form-control form-control-sm mr-sm-2"-->
+<!--                           type="search" placeholder="search course, student"-->
+<!--                           aria-label="Search by course name or description or by student first name or last name"-->
+<!--                           name="input">-->
+<!--                    <button class="btn btn-sm" type="submit">Search</button>-->
+<!--                </form>-->
+
+<!-- end fragment NAVBAR -->
+
+
+<!-- fragment FOOTER :: needs some basic css, for its "stickyness" -->
+<!--    <div th:fragment="footer">-->
+<!--        <footer class="footer flex-column">-->
+<!--            <small>&copy 2019 Rose Lake</small>-->
+<!--        </footer>-->
+<!--    </div>-->
+
+<!-- MDBootstrap FOOTER by Kevin -->
+<!-- added flex-column class -->
+<footer th:fragment="footer" class="page-footer font-small flex-column">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2019 Copyright JBC</div>
+    <!-- Copyright -->
+</footer>
+
+
+<!-- fragment JAVASCRIPT-LINKS -->
+<div th:fragment="javascript-links">
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/js/mdb.min.js"></script>
+</div>
+
+<!-- old javascript links fragment -->
+<!-- javascript links from BOOTSTRAP 11.21.19 -->
+<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+<!--            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+<!--            crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"-->
+<!--            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"-->
+<!--            crossorigin="anonymous"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"-->
+<!--            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
+<!--            crossorigin="anonymous"></script>-->
+
+
+</body>
+
+</html>
