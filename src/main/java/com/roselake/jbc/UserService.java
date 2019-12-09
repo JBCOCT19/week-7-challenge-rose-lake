@@ -41,39 +41,57 @@ public class UserService {
         return userRepository.countByUsername(username);
     }
 
-    public void saveUser(User user){
+    //****************************************************
+    // this is called by the registration processing code
+    // registration == self-registration == USER only
+    //****************************************************
+    public void saveNewUserUser(User user){
+
+        System.out.println("In Save New USER user method, in User Service");
+        // set user's Role to USER
         user.setRoles(Arrays.asList(roleRepository.findByName("USER")));
-        // sets user's Role to USER
+
+        // ensure user is active/enabled
         user.setEnabled(true);
-        // ensures this user is active/enabled
+
+        // encrypt password
+        passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println("set encoded password");
+
         userRepository.save(user);
+        System.out.println("just saved the user to the user repository");
+
     }
 
-    public void saveAdmin(User user){
-        user.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
-        // sets this user's Role to ADMIN
-        user.setEnabled(true);
-        userRepository.save(user);
-    }
+    //***********************************************************
+    // possibly may need a saveExistingUser method, later
+    // this would be for processing a form which edits the user,
+    //                      including the whole password mess...
+    //***********************************************************
 
-    // NOTE: this UserService does not currently allow for setting MULTIPLE roles on a user!...
+
+//    // for future use
+//    public void saveNewAdminUser(User user){
+//
+//        // set user's Role to ADMIN
+//        user.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
+//
+//        // ensure user is active/enabled
+//        user.setEnabled(true);
+//
+//        // encrypt password
+//        passwordEncoder = new BCryptPasswordEncoder();
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//
+//        userRepository.save(user);
+//    }
 
     // this returns the currently logged-in user... so cool!...
-    public User getUser(){
-
+    public User getAuthenticatedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         String currentUserName = authentication.getName();
-        System.out.println("Current User Name from Authentication is " + currentUserName);
-
-        User user = userRepository.findByUsername(currentUserName);
-        if (user!=null) {
-            System.out.println("ran findByUsername and it returned a user by the name of " + user.getUsername());
-        } else {
-            System.out.println("user was null, currentUserName was " + currentUserName);
-        }
         return userRepository.findByUsername(currentUserName);
-
     }
 
 }

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="base::head">
+    <title id="title">User</title>
+</head>
+<body>
+<div th:replace="base :: navbar"></div>
+<main class="container" role="main">
+
+    <!-- card containing form for registration -->
+    <div class="card-body">
+
+        <!-- bootstrap alert -->
+        <div th:if="${message}!=null" class="alert alert-warning" role="alert">
+            <span th:text="${message}"></span>
+        </div>
+
+        <h1 class="header-text">Student Form</h1>
+        <form class="text-center"
+              action="#" th:action="@{/register}"
+              th:object="${user}"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <!-- id :: hidden input field -->
+            <input hidden th:field="*{id}"/>
+            <!-- NOTE :: if id == 0 then it is a NEW USER OBJECT -->
+            <!-- in this implementation, we don't ever EDIT EXSTING... But for future reference, it's a way to check -->
+
+            <!-- firstName :: text input field -->
+            <div class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="firstName">First Name</label>
+                <input th:required="required"
+                       type="text"
+                       name="firstName" id="firstName"
+                       class="form-control"
+                       placeholder="First Name"
+                       th:field="*{firstName}"/>
+                <span th:if="${#fields.hasErrors('firstName')}"
+                      th:errors="*{firstName}"></span>
+            </div>
+
+
+            <!-- lastName :: text input field -->
+            <div class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="lastName">Last Name</label>
+                <input th:required="required"
+                       type="text"
+                       name="lastName" id="lastName"
+                       class="form-control"
+                       placeholder="Last Name"
+                       th:field="*{lastName}"/>
+                <span th:if="${#fields.hasErrors('lastName')}"
+                      th:errors="*{lastName}"></span>
+            </div>
+
+            <!-- username :: text input field-->
+            <div class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="username">username</label>
+                <input th:required="required"
+                       type="text"
+                       name="username" id="username"
+                       class="form-control"
+                       placeholder="username"
+                       th:field="*{username}"/>
+                <span th:if="${#fields.hasErrors('username')}"
+                      th:errors="*{username}"></span>
+            </div>
+
+            <!-- email :: text input field-->
+            <div class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="email">email</label>
+                <input th:required="required"
+                       type="email"
+                       name="email" id="email"
+                       class="form-control"
+                       placeholder="email"
+                       th:field="*{email}"/>
+                <span th:if="${#fields.hasErrors('email')}"
+                      th:errors="*{email}"></span>
+            </div>
+
+            <!-- password :: text input field-->
+            <!-- only display if this is a NEW USER -->
+            <!-- NOT IMPLEMENTING the editing of a password -->
+            <div th:if="${user.id==0}"
+                 class="input md-form form-group mt-5">
+                <label class="text-primary"
+                       for="password">password</label>
+                <input th:required="required"
+                       type="password"
+                       name="password" id="password"
+                       class="form-control"
+                       placeholder="password"
+                       th:field="*{password}"/>
+                <span th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}"></span>
+            </div>
+            <!-- if we are EDITING, then the password gets silently passed along -->
+            <div th:unless="${user.id==0}">
+                <input hidden th:field="*{password}"/>
+            </div>
+
+            <!-- image :: hidden pass-through field -->
+            <input hidden th:field="*{image}"/>
+            <!-- image :: DISPLAY existing image -->
+            <div th:if="${user.image}!=''"
+                 class="form-group mt-5 text-left">
+                <label for="existingImage">Existing Image</label>
+                <img th:src="${user.image}" alt="message image"
+                     id="existingImage"/>
+            </div>
+            <!-- image :: FILE input -->
+            <div class="form-group mt-5 text-left">
+                <label th:if="${user.image}==''"
+                       for="file">Set User Image (Optional)</label>
+                <label th:unless="${user.image}==''"
+                       for="file">Change User Image</label>
+                <input type="file"
+                       id="file" name="file"
+                       class="form-control-file">
+            </div>
+
+            <!-- silently passed along fields -->
+            <input hidden th:field="*{enabled}"/>
+            <input hidden th:field="*{roles}"/>
+            <input hidden th:field="*{messages}"/>
+            <input hidden th:field="*{peopleIFollow}"/>
+            <input hidden th:field="*{peopleFollowingMe}"/>
+
+            <!-- oh yeah, SUBMIT -->
+            <button type="submit" class="btn btn-outline-info btn-rounded waves-effect">
+            <span th:if="${user.id==0}">
+            <i class="fas fa-plus pr-2"></i>Register
+            </span>
+                <span th:unless="${user.id==0}">
+            Save
+            </span>
+            </button>
+
+        </form>
+    </div>
+
+</main>
+<div th:replace="base :: footer"></div>
+<div th:replace="base :: javascript-links"></div>
+</body>
+</html>

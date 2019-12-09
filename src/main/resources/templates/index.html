@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="base::head">
+    <title id="title">Home</title>
+</head>
+<body>
+<div th:replace="base :: navbar"></div>
+<main class="container" role="main">
+    <div th:if="${param.logout}" class="alert alert-warning" role="alert">
+        You have been logged out
+    </div>
+    <div th:if="${message}!=null" class="alert alert-info" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <h2 class="text-center mt-3">Messages</h2>
+    <table class="table table-borderless mx-auto w-75" aria-label="list of messages">
+        <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Date</th>
+            <th scope="col">Author</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${messages}">
+            <td><span th:text="${message.title}"></span></td>
+            <td><span th:text="${message.date}"></span></td>
+            <td><span th:text="${message.username}"></span></td>
+            <td th:if="${#authorization.expression('isAuthenticated()')}"
+                class="btn-group btn-group-sm"
+                role="group"
+                aria-label="view any message, view edit or delete your own message">
+                <a th:if="(${message.username}==${user.username})"
+                   th:href="@{/deletemessage/{id}(id=${message.id})}"
+                   class="btn btn-sm btn-rounded">
+                    <i class="far fa-trash-alt pr-2"></i>Delete
+                </a>
+                <a th:if="(${message.username}==${user.username})"
+                   th:href="@{/editmessage/{id}(id=${message.id})}"
+                   class="btn btn-sm btn-rounded">
+                    <i class="far fa-edit pr-2"></i>Edit
+                </a>
+                <a th:href="@{/viewmessage/{id}(id=${message.id})}"
+                   class="btn btn-sm btn-rounded">
+                    <i class="fas fa-bars pr-2"></i>View
+                </a>
+            </td>
+            <td th:unless="${#authorization.expression('isAuthenticated()')}"
+                class="btn-group btn-group-sm"
+                role="group"
+                aria-label="view a message">
+                <a th:href="@{/viewmessage/{id}(id=${message.id})}"
+                   class="btn btn-sm btn-rounded">
+                    <i class="fas fa-bars pr-2"></i>View
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<div th:replace="base :: footer"></div>
+<div th:replace="base :: javascript-links"></div>
+</body>
+</html>

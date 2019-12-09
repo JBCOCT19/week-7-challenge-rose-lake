@@ -46,17 +46,20 @@ public class DataLoader implements CommandLineRunner {
             //*******************************************
             passwordEncoder = new BCryptPasswordEncoder();
 
-            userRepository.save(new User("User", "Last", "user@user.com", "user", passwordEncoder.encode("user"), true));
+            userRepository.save(new User("User", "Last", "user@user.com", "user",
+                    passwordEncoder.encode("user"), true));
             User user = userRepository.findByUsername("user");
             user.setRoles(Arrays.asList(userRole));
             userRepository.save(user);
 
-            userRepository.save(new User("Rose", "Lake", "rose@lake.com", "rose", passwordEncoder.encode("lake"), true));
+            userRepository.save(new User("Rose", "Lake", "rose@lake.com", "rose",
+                    passwordEncoder.encode("lake"), true));
             User rose = userRepository.findByUsername("rose");
             rose.setRoles(Arrays.asList(userRole));
             userRepository.save(rose);
 
-            userRepository.save(new User("Brian", "Lake", "brian@lake.com", "brian", passwordEncoder.encode("lake"), true));
+            userRepository.save(new User("Brian", "Lake", "brian@lake.com", "brian",
+                    passwordEncoder.encode("lake"), true));
             User brian = userRepository.findByUsername("brian");
             brian.setRoles(Arrays.asList(userRole));
             userRepository.save(brian);
