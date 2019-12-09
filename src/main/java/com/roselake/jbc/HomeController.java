@@ -10,8 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -171,7 +170,24 @@ public class HomeController {
 
     @GetMapping("/deletemessage/{id}")
     public String deleteMessage(@PathVariable("id") long id, Model model){
-        // do the deleting code
+
+
+        Message deleteMessage = messageRepository.findById(id).get();
+        System.out.println("******************** Deleting message with ID = " + id);
+
+        // UNLINK message from this author ::
+        String authorname = deleteMessage.getUsername();
+        User author = userRepository.findByUsername(authorname);
+        author.removeMessage(deleteMessage);
+        userRepository.save(author);
+
+        // UNLINK user from this message ::
+        deleteMessage.clearUser();
+        messageRepository.save(deleteMessage);
+
+        // delete the message from the repository
+        messageRepository.deleteById(id);
+        
         return "redirect:/";    // this will run the code inside of "/" mapping!
     }
 

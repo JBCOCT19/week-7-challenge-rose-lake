@@ -7,19 +7,17 @@
 <div th:replace="base :: navbar"></div>
 <main class="container" role="main">
 
-    <div th:if="${param.logout}" class="alert alert-warning" role="alert">
+    <div th:if="${param.logout}" class="alert alert-warning mt-3 w-50" role="alert">
         You have been logged out
     </div>
-    <div th:if="${infoMessage}!=null" class="alert alert-info" role="alert">
+    <div th:if="${infoMessage}!=null" class="alert alert-info mt-3 w-50" role="alert">
         <span th:text="${infoMessage}"></span>
     </div>
 
     <div th:unless="${#authorization.expression('isAuthenticated()')}"
-         class="card mx-auto w-50">
-        <div class="card-text">
-            Welcome!<br>
-            You may log in with user/user, rose/lake, or brian/lake for testing purposes.<br>
-            Enjoy!
+         class="card mx-auto w-50 mt-3">
+        <div class="card-text text-center">
+            Welcome! You may log in with user/user, rose/lake, or brian/lake for testing purposes. Enjoy!
         </div>
     </div>
 
